@@ -34,7 +34,7 @@ class _EdgeDetectionShapeState extends State<EdgeDetectionShape> {
   late double top;
   late double left;
 
-  late Offset? currentDragPosition;
+  Offset? currentDragPosition;
 
   @override
   void didChangeDependencies() {
@@ -55,7 +55,7 @@ class _EdgeDetectionShapeState extends State<EdgeDetectionShape> {
   Widget build(BuildContext context) {
     return Magnifier(
       visible: currentDragPosition != null,
-      position: currentDragPosition!,
+      position: currentDragPosition??Offset(0, 0),
       child: Stack(
         children: [
           _getTouchBubbles(),

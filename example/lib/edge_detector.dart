@@ -45,9 +45,9 @@ class EdgeDetector {
     return await _subscribeToPort<bool>(port);
   }
 
-  void _spawnIsolate<T>(Function function, dynamic input, ReceivePort port) {
+  void _spawnIsolate<T>(Function(T) function, dynamic input, ReceivePort port) {
     Isolate.spawn<T>(
-      function(T),
+      function,
       input,
       onError: port.sendPort,
       onExit: port.sendPort

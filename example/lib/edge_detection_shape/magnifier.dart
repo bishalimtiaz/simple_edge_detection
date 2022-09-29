@@ -31,7 +31,10 @@ class _MagnifierState extends State<Magnifier> {
   void initState() {
     _magnifierSize = widget.size;
     _scale = widget.scale;
-    _calculateMatrix();
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      _calculateMatrix();
+    });
+
 
     super.initState();
   }

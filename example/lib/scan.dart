@@ -1,6 +1,7 @@
 import 'dart:async';
-import 'dart:developer';
+import 'dart:developer' ;
 import 'dart:io';
+import 'dart:math' hide log;
 
 import 'package:camera/camera.dart';
 import 'package:simple_edge_detection/edge_detection.dart';
@@ -21,9 +22,9 @@ class Scan extends StatefulWidget {
 class _ScanState extends State<Scan> {
   late  CameraController controller;
   late  List<CameraDescription> cameras;
-  late String? imagePath;
-  late String? croppedImagePath;
-  late EdgeDetectionResult? edgeDetectionResult;
+   String? imagePath;
+   String? croppedImagePath;
+   EdgeDetectionResult? edgeDetectionResult;
 
   @override
   void initState() {
@@ -71,7 +72,7 @@ class _ScanState extends State<Scan> {
       return;
     }
 
-    controller = CameraController(cameras[0], ResolutionPreset.veryHigh,
+    controller = CameraController(cameras[0], ResolutionPreset.medium,
         enableAudio: false);
     controller.initialize().then((_) {
       if (!mounted) {
@@ -141,7 +142,9 @@ class _ScanState extends State<Scan> {
     }
 
     try {
-      await controller.takePicture();
+     XFile picture= await controller.takePicture();
+     await picture.saveTo(filePath);
+
     } on CameraException catch (e) {
       log(e.toString());
       return null;
