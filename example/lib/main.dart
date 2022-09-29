@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simple_edge_detection_example/app/doc_scan.dart';
 
 import 'scan.dart';
 
@@ -18,7 +19,9 @@ class EdgeDetectionApp extends StatelessWidget {
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: Scan(),
+      home:
+      DocScan(),
+      //Scan(),
     );
   }
 }
