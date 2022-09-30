@@ -5,5 +5,5 @@ abstract class ScannerColor {
 
   static const Color cameraViewBackgroundColor = Colors.black;
   static const Color captureButtonInnerCircleColor = Colors.white;
-  static const Color captureButtonOuterCircleBorderColor = Color(0xFF1de9b6);
+  static const Color scannerPrimaryColor = Color(0xFF1de9b6);
 }

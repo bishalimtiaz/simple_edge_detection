@@ -1,10 +1,13 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:simple_edge_detection_example/app/constants/enums.dart';
 import 'package:simple_edge_detection_example/app/constants/scanner_color.dart';
 import 'package:simple_edge_detection_example/app/controllers/my_scan_controller.dart';
 import 'package:simple_edge_detection_example/app/views/preview_image.dart';
 import 'package:simple_edge_detection_example/app/widget/camera_footer.dart';
 import 'package:simple_edge_detection_example/app/widget/camera_header.dart';
 import 'package:simple_edge_detection_example/app/widget/camera_view.dart';
+import 'package:simple_edge_detection_example/app/widget/falsh_mode_settings.dart';
 
 class MyScan extends StatefulWidget {
   const MyScan({Key? key}) : super(key: key);
@@ -40,14 +43,12 @@ class _MyScanState extends State<MyScan> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             CameraHeader(
+              flashModeController: _controller.flashModeController,
+              scannerCameraSettingsController:
+                  _controller.scannerCameraSettingsController,
               onTapBackButton: () {},
-              onTapFlashButton: () {},
-              onTapMoreButton: () {},
             ),
-            Flexible(
-              flex: 8,
-              child: _getCameraView(),
-            ),
+            _getMainView(),
             Flexible(
               flex: 2,
               child: CameraFooter(
@@ -56,6 +57,35 @@ class _MyScanState extends State<MyScan> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _getMainView() {
+    return Flexible(
+      flex: 8,
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          Positioned.fill(child: _getCameraView()),
+          ValueListenableBuilder<ScannerCameraSettings>(
+              valueListenable: _controller
+                  .scannerCameraSettingsController.scannerCameraSettings,
+              builder: (context, ScannerCameraSettings value, _) {
+                return Visibility(
+                  visible: value == ScannerCameraSettings.flash,
+                  child: Align(
+                    alignment: FractionalOffset.topCenter,
+                    child: FlashModeSetting(
+                      flashModeController: _controller.flashModeController,
+                      onChangeFlashMode: (FlashMode mode) {
+                        _controller.setFlashMode(mode);
+                      },
+                    ),
+                  ),
+                );
+              })
+        ],
       ),
     );
   }

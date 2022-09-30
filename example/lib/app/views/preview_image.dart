@@ -41,7 +41,11 @@ class _PreviewImageState extends State<PreviewImage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            PreviewImageHeader(onTapBackButton: () {}),
+            PreviewImageHeader(
+              onTapBackButton: () async{
+                Navigator.of(context).pop();
+              },
+            ),
             Flexible(
               flex: 8,
               child: Image.file(

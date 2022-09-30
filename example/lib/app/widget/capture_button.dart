@@ -21,7 +21,7 @@ class CaptureButton extends StatelessWidget {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           border: Border.all(
-            color: ScannerColor.captureButtonOuterCircleBorderColor,
+            color: ScannerColor.scannerPrimaryColor,
             width: Dimens.dimen_4,
           ),
         ),
