@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:simple_edge_detection_example/app/doc_scanner.dart';
+import 'package:simple_edge_detection_example/app/my_scan.dart';
 
-import 'scan.dart';
 
-void main() {
+void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+
+  await DocScanner.initializeScanner();
 
   runApp(const EdgeDetectionApp());
 }
@@ -18,7 +21,7 @@ class EdgeDetectionApp extends StatelessWidget {
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: Scan(),
+      home: const MyScan(),
     );
   }
 }

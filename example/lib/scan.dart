@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:developer' ;
 import 'dart:io';
-import 'dart:math' hide log;
 
 import 'package:camera/camera.dart';
 import 'package:simple_edge_detection/edge_detection.dart';
@@ -10,7 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:simple_edge_detection_example/cropping_preview.dart';
 
-import 'camera_view.dart';
+import 'app/widget/camera_view.dart';
 import 'edge_detector.dart';
 import 'image_view.dart';
 

@@ -12,13 +12,7 @@ class CameraView extends StatelessWidget {
   }
 
   Widget _getCameraPreview() {
-    if (controller == null || !controller.value.isInitialized) {
-      return Container();
-    }
 
-    return Center(
-        child: AspectRatio(
-            aspectRatio: controller.value.aspectRatio,
-            child: CameraPreview(controller)));
+    return CameraPreview(controller);
   }
 }
