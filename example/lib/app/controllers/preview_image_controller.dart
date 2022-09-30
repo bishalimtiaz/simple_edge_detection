@@ -1,0 +1,4 @@
+class PreviewImageController {
+
+  void disposeController() {}
+}

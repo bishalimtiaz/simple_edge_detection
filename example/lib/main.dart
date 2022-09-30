@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simple_edge_detection_example/app/doc_scanner.dart';
-import 'package:simple_edge_detection_example/app/my_scan.dart';
+import 'package:simple_edge_detection_example/app/views/my_scan.dart';
 
 
 void main() async{

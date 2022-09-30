@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:camera/camera.dart';
 import 'package:simple_edge_detection_example/app/constants/enums.dart';
 import 'package:simple_edge_detection_example/app/doc_scanner.dart';
@@ -23,6 +25,7 @@ class MyScanController {
     );
 
     initializeControllerFuture = cameraController.initialize();
+    cameraController.setFlashMode(FlashMode.auto);
   }
 
   CameraDescription _getCamera() {
@@ -36,6 +39,24 @@ class MyScanController {
       case CameraType.BACK:
         return cameras.first;
     }
+  }
+
+  Future<String?> takePicture() async{
+
+    try{
+      if (!cameraController.value.isInitialized) {
+        log('Error: select a camera first.');
+        return null;
+      }
+      if (cameraController.value.isTakingPicture) {
+        return null;
+      }
+      XFile image = await cameraController.takePicture();
+      return image.path;
+    } catch (e){
+      log("Error: $e");
+    }
+    return null;
   }
 
   void disposeController() {

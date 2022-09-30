@@ -26,7 +26,7 @@ class CameraFooter extends StatelessWidget {
           width: 48,
         ),
         CaptureButton(
-          captureImage: () {},
+          captureImage: onTapCaptureButton,
         ),
         const SizedBox(
           width: 48,
