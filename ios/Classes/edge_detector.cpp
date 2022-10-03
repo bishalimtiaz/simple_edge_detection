@@ -126,7 +126,7 @@ vector<vector<cv::Point> > EdgeDetector::find_squares(Mat& image)
 
     Mat gray0(image.size(), CV_8U), gray;
 
-    cvtColor(image , gray, COLOR_BGR2GRAY);
+    cvtColor(image , gray, COLOR_RGB2GRAY);
     medianBlur(gray, gray, 3);      // blur will enhance edge detection
     vector<vector<cv::Point> > contours;
 

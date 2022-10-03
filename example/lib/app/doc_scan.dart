@@ -22,6 +22,7 @@ class _DocScanState extends State<DocScan> {
   String? croppedImagePath;
   bool isInit = false;
   EdgeDetectionResult? edgeDetectionResult;
+  late Future<void> _initializeControllerFuture;
 
   @override
   void initState() {
@@ -34,14 +35,15 @@ class _DocScanState extends State<DocScan> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: isInit
+      body:
+      isInit
           ? Column(
               children: [
                 Expanded(
                   child: _getMainWidget(),
                 ),
                 SizedBox(
-                  height: 42,
+                  height: 62,
                   child: _getBottomBar(),
                 )
               ],
@@ -60,12 +62,13 @@ class _DocScanState extends State<DocScan> {
       log('No cameras detected');
       return;
     }
-    controller = CameraController(cameras[0], ResolutionPreset.medium,
+    controller = CameraController(cameras[0], ResolutionPreset.high,
         enableAudio: false);
     controller.initialize().then((_) {
       if (!mounted) {
         return;
       }
+      _initializeControllerFuture = controller.initialize();
       setState(() {
         isInit = true;
       });
@@ -98,9 +101,9 @@ class _DocScanState extends State<DocScan> {
         child: FloatingActionButton(
           child: const Icon(Icons.arrow_back),
           onPressed: () {
-            setState((){
-              imagePath=null;
-              croppedImagePath=null;
+            setState(() {
+              imagePath = null;
+              croppedImagePath = null;
             });
           },
         ),
@@ -120,6 +123,7 @@ class _DocScanState extends State<DocScan> {
       ),
     ]);
   }
+
   Future _processImage(
       String? filePath, EdgeDetectionResult edgeDetectionResult) async {
     if (!mounted || filePath == null) {
@@ -127,7 +131,7 @@ class _DocScanState extends State<DocScan> {
     }
 
     bool result =
-    await EdgeDetector().processImage(filePath, edgeDetectionResult);
+        await EdgeDetector().processImage(filePath, edgeDetectionResult);
 
     if (result == false) {
       return;
@@ -139,22 +143,29 @@ class _DocScanState extends State<DocScan> {
       imageCache.clear();
     });
   }
+
   Widget _getMainWidget() {
     if (croppedImagePath != null) {
       return ImageView(imagePath: croppedImagePath!);
     }
     if (imagePath == null && edgeDetectionResult == null) {
-      return CameraPreview( controller);
+      return AspectRatio(
+          aspectRatio: controller.value.aspectRatio,
+          child: CameraPreview(controller));
     }
 
-    return ImagePreview(
-      imagePath: imagePath!,
-      edgeDetectionResult: edgeDetectionResult!,
-    );
+    if (edgeDetectionResult != null) {
+      return ImagePreview(
+        imagePath: imagePath!,
+        edgeDetectionResult: edgeDetectionResult!,
+      );
+    }
+    return Container();
   }
+
   void onTakePictureButtonPressed() async {
     final file = await controller.takePicture();
-     imagePath= file.path;
+    imagePath = file.path;
 
     log('Picture saved to $imagePath');
 
@@ -170,7 +181,6 @@ class _DocScanState extends State<DocScan> {
     //     ),
     //   ),
     // );
-
   }
 
   Future _detectEdges(String? filePath) async {
