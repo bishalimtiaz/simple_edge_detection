@@ -5,10 +5,12 @@ import 'package:simple_edge_detection_example/app/constants/scanner_asset.dart';
 
 class CameraFooter extends StatelessWidget {
   final Function() onTapCaptureButton;
+  final Function() onTapGalleryButton;
 
   const CameraFooter({
     required this.onTapCaptureButton,
     Key? key,
+    required this.onTapGalleryButton,
   }) : super(key: key);
 
   @override
@@ -31,10 +33,13 @@ class CameraFooter extends StatelessWidget {
         const SizedBox(
           width: 48,
         ),
-        const AssetImageView(
-          assetPath: ScannerAsset.icGallery,
-          height: 24,
-          width: 24,
+        GestureDetector(
+          onTap: onTapGalleryButton,
+          child: const AssetImageView(
+            assetPath: ScannerAsset.icGallery,
+            height: 24,
+            width: 24,
+          ),
         ),
       ],
     );

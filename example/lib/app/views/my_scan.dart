@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:simple_edge_detection_example/app/constants/enums.dart';
 import 'package:simple_edge_detection_example/app/constants/scanner_color.dart';
 import 'package:simple_edge_detection_example/app/controllers/my_scan_controller.dart';
@@ -52,6 +53,7 @@ class _MyScanState extends State<MyScan> {
             Flexible(
               flex: 2,
               child: CameraFooter(
+                onTapGalleryButton: _onTapGalleryButton,
                 onTapCaptureButton: _captureImage,
               ),
             ),
@@ -96,16 +98,7 @@ class _MyScanState extends State<MyScan> {
 
     String? imagePath = await _controller.takePicture();
 
-    if (!mounted || imagePath == null) return;
-
-    // If the picture was taken, display it on a new screen.
-    await Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => PreviewImage(
-          imagePath: imagePath,
-        ),
-      ),
-    );
+    _navigateToPreviewImageScreen(imagePath);
   }
 
   Widget _getCameraView() {
@@ -121,6 +114,30 @@ class _MyScanState extends State<MyScan> {
           return const Center(child: CircularProgressIndicator());
         }
       },
+    );
+  }
+
+  void _onTapGalleryButton() async{
+    final ImagePicker _picker = ImagePicker();
+    // Pick an image
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+
+    _navigateToPreviewImageScreen(image?.path);
+
+    // final List<XFile>? images = await _picker.pickMultiImage();
+
+  }
+
+  void _navigateToPreviewImageScreen(String? imagePath) async{
+    if (!mounted || imagePath == null) return;
+
+    // If the picture was taken, display it on a new screen.
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => PreviewImage(
+          imagePath: imagePath,
+        ),
+      ),
     );
   }
 }
