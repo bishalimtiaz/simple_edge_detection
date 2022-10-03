@@ -15,7 +15,7 @@ class EdgePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
       ..color = color.withOpacity(0.5)
-      ..strokeWidth = 2
+      ..strokeWidth = 1
       ..strokeCap = StrokeCap.round;
 
     canvas.drawPoints(PointMode.polygon, points, paint);

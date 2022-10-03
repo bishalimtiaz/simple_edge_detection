@@ -14,13 +14,13 @@ class EdgeDetector {
     processImageInput.sendPort.send(true);
   }
 
-  Future<EdgeDetectionResult> detectEdges(String filePath) async {
+  Future<EdgeDetectionResult> detectEdges(String? filePath) async {
     final port = ReceivePort();
 
     _spawnIsolate<EdgeDetectionInput>(
         startEdgeDetectionIsolate,
         EdgeDetectionInput(
-          inputPath: filePath,
+          inputPath: filePath??"",
           sendPort: port.sendPort
         ),
         port
@@ -29,13 +29,13 @@ class EdgeDetector {
     return await _subscribeToPort<EdgeDetectionResult>(port);
   }
 
-  Future<bool> processImage(String filePath, EdgeDetectionResult edgeDetectionResult) async {
+  Future<bool> processImage(String? filePath, EdgeDetectionResult edgeDetectionResult) async {
     final port = ReceivePort();
 
     _spawnIsolate<ProcessImageInput>(
       processImageIsolate,
       ProcessImageInput(
-        inputPath: filePath,
+        inputPath: filePath??"",
         edgeDetectionResult: edgeDetectionResult,
         sendPort: port.sendPort
       ),

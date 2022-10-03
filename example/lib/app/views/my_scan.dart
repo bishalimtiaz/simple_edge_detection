@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:simple_edge_detection/edge_detection.dart';
 import 'package:simple_edge_detection_example/app/constants/enums.dart';
 import 'package:simple_edge_detection_example/app/constants/scanner_color.dart';
 import 'package:simple_edge_detection_example/app/controllers/my_scan_controller.dart';
@@ -9,6 +10,7 @@ import 'package:simple_edge_detection_example/app/widget/camera_footer.dart';
 import 'package:simple_edge_detection_example/app/widget/camera_header.dart';
 import 'package:simple_edge_detection_example/app/widget/camera_view.dart';
 import 'package:simple_edge_detection_example/app/widget/falsh_mode_settings.dart';
+import 'package:simple_edge_detection_example/edge_detector.dart';
 
 class MyScan extends StatefulWidget {
   const MyScan({Key? key}) : super(key: key);
@@ -97,8 +99,10 @@ class _MyScanState extends State<MyScan> {
     await _controller.initializeControllerFuture;
 
     String? imagePath = await _controller.takePicture();
+    EdgeDetectionResult result = await EdgeDetector().detectEdges(imagePath);
+    // await EdgeDetector().processImage(imagePath, result);
 
-    _navigateToPreviewImageScreen(imagePath);
+    _navigateToPreviewImageScreen(imagePath,result);
   }
 
   Widget _getCameraView() {
@@ -122,13 +126,13 @@ class _MyScanState extends State<MyScan> {
     // Pick an image
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
 
-    _navigateToPreviewImageScreen(image?.path);
+    _navigateToPreviewImageScreen(image?.path,null);
 
     // final List<XFile>? images = await _picker.pickMultiImage();
 
   }
 
-  void _navigateToPreviewImageScreen(String? imagePath) async{
+  void _navigateToPreviewImageScreen(String? imagePath, EdgeDetectionResult? result) async{
     if (!mounted || imagePath == null) return;
 
     // If the picture was taken, display it on a new screen.
@@ -136,6 +140,7 @@ class _MyScanState extends State<MyScan> {
       MaterialPageRoute(
         builder: (context) => PreviewImage(
           imagePath: imagePath,
+          edgeDetectionResult: result,
         ),
       ),
     );
